@@ -21,6 +21,7 @@ func InitRouter(r *gin.Engine) {
 		v1Group.GET("/ping", v1.Ping)
 		v1Group.POST("/add/member", v1.AddUser)
 		v1Group.GET("/sign", sign)
+		v1Group.GET("/add/name",v1.AddName)
 	}
 
 	v2Group := r.Group("/v2").Use(middleware.SignMiddleware())

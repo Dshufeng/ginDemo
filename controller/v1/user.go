@@ -3,6 +3,8 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"ginDemo/entity"
+	"ginDemo/utils"
+	"net/http"
 )
 
 func Ping(c *gin.Context) {
@@ -31,5 +33,28 @@ func AddUser(c *gin.Context) {
 		"age":  mem.Age,
 	})
 
-	c.JSON(200, ret)
+	c.JSON(http.StatusOK, ret)
+}
+
+func AddName(c *gin.Context)  {
+	name := c.Query("name")
+	var ret entity.Result
+
+	err := validatorName(name)
+	if err != nil{
+		ret.Code = 400
+		ret.Msg = err.Error()
+		c.AbortWithStatusJSON(500,ret)
+		return
+	}
+	ret.Code = 0
+	ret.Msg = "success"
+	c.JSON(200,ret)
+}
+
+func validatorName(str string)  (err error){
+	if str == ""{
+		err = utils.WeChat("name can not null")
+	}
+	return
 }
